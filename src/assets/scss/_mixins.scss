@@ -1,0 +1,13 @@
+// quick flex
+@mixin flex($jc: center, $ai: center) {
+  display: flex;
+  justify-content: $jc;
+  align-items: $ai;
+}
+
+// card
+@mixin card() {
+  border-radius: $bradius;
+  background-color: $whitey;
+  box-shadow: $boxshadow;
+}
