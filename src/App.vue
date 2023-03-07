@@ -3,37 +3,33 @@
     <aside class="controls">
       <header class="controls__title"><h2>Добавление товара</h2></header>
       <form class="form_add-item">
-        <label class="form__label"
-          >Наименование товара<input
-            type="text"
-            name="item-name"
-            placeholder="Введите наименование товара"
-            class="form__input"
-        /></label>
-        <label class="form__label"
-          >Описание товара<textarea
+        <label class="form__label">
+          <div>Наименование товара</div>
+          <input type="text" name="item-name" placeholder="Введите наименование товара" class="form__input" />
+        </label>
+        <label class="form__label">
+          <div>Описание товара</div>
+          <textarea
             name="item-description"
             placeholder="Введите описание товара"
             class="form__textarea"
           ></textarea>
         </label>
-        <label class="form__label"
-          >Ссылка на изображение товара<input
-            type="text"
-            name="item-image"
-            placeholder="Введите ссылку"
-            class="form__input"
-        /></label>
-        <label class="form__label"
-          >Цена товара<input type="text" name="item-price" placeholder="Введите цену" class="form__input"
-        /></label>
-        <button type="submit">Добавить товар</button>
+        <label class="form__label">
+          <div>Ссылка на изображение товара</div>
+          <input type="text" name="item-image" placeholder="Введите ссылку" class="form__input" />
+        </label>
+        <label class="form__label">
+          <div>Цена товара</div>
+          <input type="text" name="item-price" placeholder="Введите цену" class="form__input" />
+        </label>
+        <button class="form__button" type="submit">Добавить товар</button>
       </form>
     </aside>
     <section class="catalog">
       <div class="catalog__controls">
         <div class="catalog__sort sort">
-          <select class="sort__select" disabled>
+          <select class="sort__select">
             <option>По наименованию</option>
             <option>По цене min</option>
             <option>По цене max</option>
@@ -239,6 +235,29 @@ export default {
     line-height: 1.3em;
     letter-spacing: -0.02em;
   }
+
+  &__input,
+  &__textarea {
+    width: 100%;
+    margin: 0.25rem 0 1rem;
+  }
+
+  &__button {
+    width: 100%;
+    padding: 0.625rem 0;
+    @include button($green);
+    font-family: 'Inter', 'Source Sans Pro', Verdana, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.25em;
+    color: #FFFFFF;
+
+    &:disabled {
+      background-color: $button-disabled;
+      color: $font-disabled;
+    }
+  }
 }
 
 .catalog {
@@ -277,13 +296,13 @@ export default {
     appearance: none;
     border: none;
     padding: 0.625rem 1rem;
-    padding-right: calc(1rem + (0.3825em * 1.4142135623730950488016887242097) + 0.625rem);
     margin: 0;
     width: 100%;
     font-family: inherit;
     font-size: 0.75rem;
     font-weight: 400;
     line-height: 1.25em;
+    @include select-arrow(1rem);
     background-color: $whitey;
     box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     border-radius: $bradius;
@@ -291,22 +310,8 @@ export default {
 
     &:disabled {
       color: $font-disabled;
+      @include select-arrow(1rem, $font-disabled);
     }
-  }
-
-  &::after {
-    // переписать позицию или вообще на background, чтобы сохранялся цвет
-    content: "";
-    display: block;
-    width: 0.3825em;
-    height: 0.3825em;
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translate(-50%, -50%) rotate(45deg);
-    border-width: 0 1px 1px 0;
-    border-style: solid;
-    border-color: currentColor;
   }
 }
 
@@ -357,10 +362,7 @@ export default {
     right: -0.5rem;
     width: 2rem;
     height: 2rem;
-    box-shadow: 0px 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    background: $salmon;
-    border-radius: 0.625rem;
+    @include button($salmon);
 
     button {
       width: 100%;

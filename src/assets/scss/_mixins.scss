@@ -11,3 +11,18 @@
   background-color: $whitey;
   box-shadow: $boxshadow;
 }
+
+// select arrow
+@mixin select-arrow($pr: 0, $color: #000000) {
+  background-image: url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.48526 1.24252L4.24261 4.48516L0.999974 1.24252' stroke='#{'%23' + str-slice('#{$color}', 2, -1)}'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $pr center;
+  padding-right: calc($pr + 8px + 5px);
+}
+
+@mixin button($color: #ffffff) {
+  box-shadow: $buttonshadow;
+  border-radius: 0.625rem;
+  background: $color;
+  cursor: pointer;
+}
