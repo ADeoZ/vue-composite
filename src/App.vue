@@ -206,24 +206,27 @@ export default {
 @import "@/assets/scss/style.scss";
 
 .main {
-  @include flex(left, flex-start);
+  @include flex(left, stretch);
   gap: 1rem;
   padding: 2rem 2rem;
 }
 
 .controls {
-  @include flex;
+  display: flex;
   flex-direction: column;
   max-width: 20.75rem;
 
   &__title h2 {
+    margin-bottom: 1rem;
     font-weight: 600;
     font-size: 1.75rem;
     line-height: 1.25em;
   }
 }
 
-.form_add-item {
+.form_add-item {  
+  position: sticky;
+  top: 1.5rem;
   padding: 1.5rem;
   @include card;
 }
