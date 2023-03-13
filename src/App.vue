@@ -3,7 +3,7 @@
     <aside class="controls">
       <header class="controls__title"><h2>Добавление товара</h2></header>
       <form class="form_add-item">
-        <label class="form__label">
+        <label class="form__label form__label_required">
           <div>Наименование товара</div>
           <input type="text" name="item-name" placeholder="Введите наименование товара" class="form__input" />
         </label>
@@ -15,11 +15,11 @@
             class="form__textarea"
           ></textarea>
         </label>
-        <label class="form__label">
+        <label class="form__label form__label_required">
           <div>Ссылка на изображение товара</div>
           <input type="text" name="item-image" placeholder="Введите ссылку" class="form__input" />
         </label>
-        <label class="form__label">
+        <label class="form__label form__label_required">
           <div>Цена товара</div>
           <input type="text" name="item-price" placeholder="Введите цену" class="form__input" />
         </label>
@@ -214,6 +214,7 @@ export default {
 .controls {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 20.75rem;
 
   &__title h2 {
@@ -224,7 +225,7 @@ export default {
   }
 }
 
-.form_add-item {  
+.form_add-item {
   position: sticky;
   top: 1.5rem;
   padding: 1.5rem;
@@ -237,24 +238,58 @@ export default {
     font-size: 0.625rem;
     line-height: 1.3em;
     letter-spacing: -0.02em;
+
+    & > div {
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+
+      // &::after {
+      //   content: "";
+      //   position: absolute;
+      //   right: 0;
+      //   width: 0.25rem;
+      //   height: 0.25rem;
+      //   border-radius: 50%;
+      //   background-color: $salmon;
+      // }
+    }
   }
 
   &__input,
   &__textarea {
     width: 100%;
     margin: 0.25rem 0 1rem;
+    padding: 0.625rem 1rem;
+    background-color: $whitey;
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+    border-radius: $bradius;
+
+    font-size: 0.75rem;
+    line-height: 1.25em;
+    color: $font-main;
+
+    &::placeholder {
+      color: $font-disabled;
+    }
+  }
+
+  &__textarea {
+    height: 6.75rem;
+    resize: none;
   }
 
   &__button {
     width: 100%;
+    margin-top: .5rem;
     padding: 0.625rem 0;
     @include button($green);
-    font-family: 'Inter', 'Source Sans Pro', Verdana, sans-serif;
+    font-family: "Inter", "Source Sans Pro", Verdana, sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 0.75rem;
     line-height: 1.25em;
-    color: #FFFFFF;
+    color: #ffffff;
 
     &:disabled {
       background-color: $button-disabled;
@@ -296,8 +331,6 @@ export default {
   position: relative;
 
   &__select {
-    appearance: none;
-    border: none;
     padding: 0.625rem 1rem;
     margin: 0;
     width: 100%;

@@ -29,3 +29,11 @@ button {
   background-color: transparent;
   cursor: pointer;
 }
+
+input, textarea, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;  
+  font-family: inherit;
+}
