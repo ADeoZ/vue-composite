@@ -20,9 +20,15 @@
   padding-right: calc($pr + 8px + 5px);
 }
 
+// button
 @mixin button($color: #ffffff) {
   box-shadow: $buttonshadow;
   border-radius: 0.625rem;
   background: $color;
   cursor: pointer;
+}
+
+// focus
+@mixin focused() {
+  outline: 2px solid $focused;
 }

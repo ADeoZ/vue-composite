@@ -4,24 +4,28 @@
       <header class="controls__title"><h2>Добавление товара</h2></header>
       <form class="form_add-item">
         <label class="form__label form__label_required">
-          <div>Наименование товара</div>
-          <input type="text" name="item-name" placeholder="Введите наименование товара" class="form__input" />
+          <div class="form__label__text">Наименование товара</div>
+          <input type="text" name="item-name" placeholder="Введите наименование товара" class="form__input form__invalid"/>
+          <div class="form__error">Поле является обязательным</div>
         </label>
         <label class="form__label">
-          <div>Описание товара</div>
+          <div class="form__label__text">Описание товара</div>
           <textarea
             name="item-description"
             placeholder="Введите описание товара"
-            class="form__textarea"
+            class="form__textarea form__invalid"
           ></textarea>
+          <div class="form__error">Поле является обязательным</div>
         </label>
         <label class="form__label form__label_required">
-          <div>Ссылка на изображение товара</div>
-          <input type="text" name="item-image" placeholder="Введите ссылку" class="form__input" />
+          <div class="form__label__text">Ссылка на изображение товара</div>
+          <input type="text" name="item-image" placeholder="Введите ссылку" class="form__input"/>
+          <div class="form__error">Поле является обязательным</div>
         </label>
         <label class="form__label form__label_required">
-          <div>Цена товара</div>
-          <input type="text" name="item-price" placeholder="Введите цену" class="form__input" />
+          <div class="form__label__text">Цена товара</div>
+          <input type="text" name="item-price" placeholder="Введите цену" class="form__input"/>
+          <div class="form__error"></div>
         </label>
         <button class="form__button" type="submit">Добавить товар</button>
       </form>
@@ -234,25 +238,26 @@ export default {
 
 .form {
   &__label {
-    color: $font-form;
-    font-size: 0.625rem;
-    line-height: 1.3em;
-    letter-spacing: -0.02em;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 
-    & > div {
-      display: inline-block;
-      vertical-align: top;
+    &__text {
       position: relative;
+      color: $font-form;
+      font-size: 0.625rem;
+      line-height: 1.3em;
+      letter-spacing: -0.02em;
+    }
 
-      // &::after {
-      //   content: "";
-      //   position: absolute;
-      //   right: 0;
-      //   width: 0.25rem;
-      //   height: 0.25rem;
-      //   border-radius: 50%;
-      //   background-color: $salmon;
-      // }
+    &_required > &__text::after {
+      content: "";
+      position: absolute;
+      right: -0.3125rem;
+      width: 0.25rem;
+      height: 0.25rem;
+      border-radius: 50%;
+      background-color: $salmon;
     }
   }
 
@@ -260,7 +265,7 @@ export default {
   &__textarea {
     width: 100%;
     margin: 0.25rem 0 1rem;
-    padding: 0.625rem 1rem;
+    padding: 0.625rem 1rem 0.6875rem;
     background-color: $whitey;
     box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     border-radius: $bradius;
@@ -272,17 +277,42 @@ export default {
     &::placeholder {
       color: $font-disabled;
     }
+
+    &:focus {
+      @include focused;
+    }
   }
 
   &__textarea {
+    display: block;
     height: 6.75rem;
     resize: none;
   }
 
+  &__invalid {
+    margin-bottom: 0.25rem;
+    outline: 1px solid $salmon;
+  }
+
+  &__error {
+    display: none;
+    min-height: 0.625rem;
+    margin-bottom: 0.125rem;
+    overflow: auto;
+    font-size: 0.5rem;
+    line-height: 1.25em;
+    letter-spacing: -0.02em;
+    color: $salmon;
+  }
+
+  &__invalid + &__error {
+    display: block;
+  }
+
   &__button {
     width: 100%;
-    margin-top: .5rem;
-    padding: 0.625rem 0;
+    margin-top: 0.5rem;
+    padding: 0.625rem 1rem 0.6875rem;
     @include button($green);
     font-family: "Inter", "Source Sans Pro", Verdana, sans-serif;
     font-style: normal;
@@ -294,6 +324,10 @@ export default {
     &:disabled {
       background-color: $button-disabled;
       color: $font-disabled;
+    }
+
+    &:focus {
+      @include focused;
     }
   }
 }
@@ -347,6 +381,10 @@ export default {
     &:disabled {
       color: $font-disabled;
       @include select-arrow(1rem, $font-disabled);
+    }
+
+    &:focus {
+      @include focused;
     }
   }
 }
