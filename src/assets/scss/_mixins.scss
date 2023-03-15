@@ -1,0 +1,68 @@
+// quick flex
+@mixin flex($jc: center, $ai: center) {
+  display: flex;
+  justify-content: $jc;
+  align-items: $ai;
+}
+
+// card
+@mixin card() {
+  border-radius: $bradius;
+  background-color: $whitey;
+  box-shadow: $boxshadow;
+}
+
+// select arrow
+@mixin select-arrow($pr: 0, $color: #000000) {
+  background-image: url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.48526 1.24252L4.24261 4.48516L0.999974 1.24252' stroke='#{'%23' + str-slice('#{$color}', 2, -1)}'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $pr center;
+  padding-right: calc($pr + 8px + 5px);
+}
+
+// button
+@mixin button($color: #ffffff) {
+  box-shadow: $buttonshadow;
+  border-radius: 0.625rem;
+  background: $color;
+  cursor: pointer;
+}
+
+// focus
+@mixin focused() {
+  outline: 2px solid $focused;
+}
+
+// darker color
+@function darker($color, $tone) {
+  $adjust: -16*$tone;
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
+
+// lighten color
+@function lighter($color, $tone) {
+  $adjust: 16*$tone;
+  @return adjust-color($color, $red: $adjust, $green: $adjust, $blue: $adjust);
+}
+
+// media-queries breakpoints
+$breakpoints: (
+  "phone": 400px,
+  "phone-wide": 480px,
+  "phablet": 560px,
+  "tablet-small": 640px,
+  "tablet": 768px,
+  "tablet-wide": 1024px,
+  "desktop": 1248px,
+  "desktop-wide": 1440px,
+);
+
+@mixin media_undo($width) {
+  @if map_has_key($breakpoints, $width) {
+    $width: map_get($breakpoints, $width) - 1px;
+
+    @media only screen and (max-width: $width) {
+      @content;
+    }
+  }
+}
