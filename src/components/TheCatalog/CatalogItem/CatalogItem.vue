@@ -1,15 +1,14 @@
 <template>
   <li class="item">
     <div class="item__image">
-      <img src="@/assets/images/70382.jpeg" alt="Фото товара" />
+      <img :src="item.image" alt="Фото товара" />
     </div>
     <div class="item__content">
-      <header class="item__name">Наименование товара</header>
+      <header class="item__name">{{ item.name }}</header>
       <div class="item__description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в
-        несколько строк
+        {{ item.description }}
       </div>
-      <div class="item__price">10 000 руб.</div>
+      <div class="item__price">{{ item.price }}</div>
       <div class="item__delete"><button></button></div>
     </div>
   </li>
@@ -18,6 +17,13 @@
 <script>
 export default {
   name: "CatalogItem",
+
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 

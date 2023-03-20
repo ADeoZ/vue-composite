@@ -4,19 +4,32 @@
       <catalog-sort />
     </div>
     <ul class="catalog__list">
-      <catalog-item />
+      <catalog-item v-for="item in itemList" :item="item" :key="item.id" />
     </ul>
   </section>
 </template>
 
 <script>
-import CatalogSort from '@/components/TheCatalog/CatalogSort';
-import CatalogItem from '@/components/TheCatalog/CatalogItem';
+import CatalogSort from "@/components/TheCatalog/CatalogSort";
+import CatalogItem from "@/components/TheCatalog/CatalogItem";
 
 export default {
   components: { CatalogSort, CatalogItem },
 
   name: "TheCatalog",
+
+  data: () => ({
+    itemList: [
+      {
+        id: 0,
+        image: "http://crazymama.ru/images/foto/70/70382.jpeg",
+        name: "Наименование товара",
+        description:
+          "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк",
+        price: 10000,
+      },
+    ],
+  }),
 };
 </script>
 
