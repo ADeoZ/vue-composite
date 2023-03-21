@@ -9,27 +9,27 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "CatalogSort",
+<script setup>
+import { defineProps, defineEmits, toRefs } from "vue";
 
-  props: {
-    sortModel: {
-      type: String,
-      required: true,
-    },
-    options: {
-      type: Array,
-      default: () => [],
-    }
+const props = defineProps({
+  sortModel: {
+    type: String,
+    required: true,
   },
+  options: {
+    type: Array,
+    default: () => [],
+  },
+});
 
-  methods: {
-    selectOption(event) {
-      this.$emit('update:sortModel', event.target.value);
-    }
-  }
-};
+const emit = defineEmits(['update:sortModel']);
+
+const { sortModel, options } = toRefs(props);
+
+const selectOption = (event) => {
+  emit('update:sortModel', event.target.value);
+}
 </script>
 
 <style lang="scss" scoped>
