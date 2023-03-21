@@ -1,9 +1,10 @@
 <template>
   <div class="sort">
-    <select class="sort__select">
-      <option>По наименованию</option>
-      <option>По цене min</option>
-      <option>По цене max</option>
+    <select class="sort__select" :value="sortModel" @change="selectOption">
+      <option disabled value="">По умолчанию</option>
+      <option v-for="option in options" :value="option.value" :key="option.value">
+        {{ option.label }}
+      </option>
     </select>
   </div>
 </template>
@@ -11,6 +12,23 @@
 <script>
 export default {
   name: "CatalogSort",
+
+  props: {
+    sortModel: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: Array,
+      default: () => [],
+    }
+  },
+
+  methods: {
+    selectOption(event) {
+      this.$emit('update:sortModel', event.target.value);
+    }
+  }
 };
 </script>
 
@@ -33,6 +51,10 @@ export default {
     border-radius: $bradius;
     cursor: pointer;
     transition: background-color 0.2s ease-in;
+
+    & option:disabled {
+      color: $font-disabled;
+    }
 
     &:disabled {
       color: $font-disabled;

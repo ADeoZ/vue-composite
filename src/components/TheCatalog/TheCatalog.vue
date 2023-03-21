@@ -1,8 +1,9 @@
 <template>
   <section class="catalog">
     <div class="catalog__controls">
-      <catalog-sort />
+      <catalog-sort :sortModel="selectedSort" :options="sortOptions" @update:sortModel="setSelectedSort" />
     </div>
+    {{ selectedSort }}
     <ul class="catalog__list">
       <catalog-item v-for="item in itemList" :item="item" :key="item.id" />
     </ul>
@@ -19,6 +20,12 @@ export default {
   name: "TheCatalog",
 
   data: () => ({
+    sortOptions: [
+      { label: "По наименованию", value: "name" },
+      { label: "По цене min", value: "priceUp" },
+      { label: "По цене max", value: "priceDown" },
+    ],
+    selectedSort: "",
     itemList: [
       {
         id: 0,
@@ -30,6 +37,11 @@ export default {
       },
     ],
   }),
+  methods: {
+    setSelectedSort(value) {
+      this.selectedSort = value;
+    },
+  },
 };
 </script>
 
