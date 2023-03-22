@@ -3,14 +3,16 @@
     <div class="catalog__controls">
       <catalog-sort :sortModel="selectedSort" :options="sortOptions" @update:sortModel="setSelectedSort" />
     </div>
-    {{ selectedSort }}
     <ul class="catalog__list">
-      <catalog-item v-for="item in itemList" :item="item" :key="item.id" @delete="deleteItem"/>
+      <catalog-item v-for="item in sortedItemList" :item="item" :key="item.id" @delete="deleteItem" />
     </ul>
   </section>
 </template>
 
 <script>
+// сделать preloader
+// сохранение списка в localStorage
+import { getItemList } from "@/api/catalogAPI";
 import CatalogSort from "@/components/TheCatalog/CatalogSort";
 import CatalogItem from "@/components/TheCatalog/CatalogItem";
 
@@ -26,24 +28,40 @@ export default {
       { label: "По цене max", value: "priceDown" },
     ],
     selectedSort: "",
-    itemList: [
-      {
-        id: 0,
-        image: "http://crazymama.ru/images/foto/70/70382.jpeg",
-        name: "Наименование товара",
-        description:
-          "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк",
-        price: 10000,
-      },
-    ],
+    itemList: [],
   }),
+
   methods: {
     setSelectedSort(value) {
       this.selectedSort = value;
     },
     deleteItem(id) {
-      console.log('Удаляем ', id);
-    }
+      const itemIndex = this.itemList.findIndex((item) => item.id === id);
+      this.itemList.splice(itemIndex, 1);
+    },
+    async fetchItemList() {
+      try {
+        const response = await getItemList();
+        this.itemList = response;
+      } catch (e) {
+        console.error("Ошибка загрузки");
+      }
+    },
+  },
+
+  computed: {
+    sortedItemList() {
+      const compare = {
+        name: (a, b) => a.name.localeCompare(b.name),
+        priceUp: (a, b) => a.price - b.price,
+        priceDown: (a, b) => b.price - a.price,
+      };
+      return [...this.itemList].sort(compare[this.selectedSort || "name"]);
+    },
+  },
+
+  mounted() {
+    this.fetchItemList();
   },
 };
 </script>
