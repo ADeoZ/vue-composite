@@ -22,14 +22,12 @@ const props = defineProps({
     default: () => [],
   },
 });
-
-const emit = defineEmits(['update:sortModel']);
-
 const { sortModel, options } = toRefs(props);
 
+const emit = defineEmits(["update:sortModel"]);
 const selectOption = (event) => {
-  emit('update:sortModel', event.target.value);
-}
+  emit("update:sortModel", event.target.value);
+};
 </script>
 
 <style lang="scss" scoped>

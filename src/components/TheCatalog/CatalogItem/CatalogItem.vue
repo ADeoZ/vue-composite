@@ -8,22 +8,28 @@
       <div class="item__description">
         {{ item.description }}
       </div>
-      <div class="item__price">{{ item.price }}</div>
-      <div class="item__delete"><button></button></div>
+      <div class="item__price">{{ priceFormatted }}</div>
+      <div class="item__delete" @click="deleteItem"><button></button></div>
     </div>
   </li>
 </template>
 
-<script>
-export default {
-  name: "CatalogItem",
+<script setup>
+import { defineProps, defineEmits, toRef, computed } from "vue";
 
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
   },
+});
+const item = toRef(props, "item");
+
+const priceFormatted = computed(() => `${item.value.price.toLocaleString()} руб.`);
+
+const emit = defineEmits(["delete"]);
+const deleteItem = () => {
+  emit("delete", item.value.id);
 };
 </script>
 

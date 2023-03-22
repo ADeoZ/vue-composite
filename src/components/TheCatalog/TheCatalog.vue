@@ -5,7 +5,7 @@
     </div>
     {{ selectedSort }}
     <ul class="catalog__list">
-      <catalog-item v-for="item in itemList" :item="item" :key="item.id" />
+      <catalog-item v-for="item in itemList" :item="item" :key="item.id" @delete="deleteItem"/>
     </ul>
   </section>
 </template>
@@ -41,6 +41,9 @@ export default {
     setSelectedSort(value) {
       this.selectedSort = value;
     },
+    deleteItem(id) {
+      console.log('Удаляем ', id);
+    }
   },
 };
 </script>
