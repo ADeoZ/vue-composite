@@ -1,6 +1,6 @@
 <template>
   <div class="sort">
-    <select class="sort__select" :value="sortModel" @change="selectOption">
+    <select class="sort__select" :value="modelValue" @change="selectOption">
       <option disabled value="">По умолчанию</option>
       <option v-for="option in options" :value="option.value" :key="option.value">
         {{ option.label }}
@@ -10,10 +10,10 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, toRefs } from "vue";
+import { defineProps, defineEmits } from "vue";
 
-const props = defineProps({
-  sortModel: {
+defineProps({
+  modelValue: {
     type: String,
     required: true,
   },
@@ -22,11 +22,10 @@ const props = defineProps({
     default: () => [],
   },
 });
-const { sortModel, options } = toRefs(props);
 
-const emit = defineEmits(["update:sortModel"]);
+const emit = defineEmits(["update:modelValue"]);
 const selectOption = (event) => {
-  emit("update:sortModel", event.target.value);
+  emit("update:modelValue", event.target.value);
 };
 </script>
 
