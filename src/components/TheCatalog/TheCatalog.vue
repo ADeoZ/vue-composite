@@ -1,69 +1,40 @@
 <template>
   <section class="catalog">
     <div class="catalog__controls">
-      <catalog-sort :sortModel="selectedSort" :options="sortOptions" @update:sortModel="setSelectedSort" />
+      <catalog-sort v-model="selectedSort" :options="sortOptions" />
     </div>
     <ul class="catalog__list">
-      <catalog-item v-for="item in sortedItemList" :item="item" :key="item.id" @delete="deleteItem" />
+      <catalog-item v-for="item in sortedList" :item="item" :key="item.id" @delete="deleteItem" />
     </ul>
   </section>
 </template>
 
-<script>
+<script setup>
 // сделать preloader
 // сохранение списка в localStorage
+import { onMounted, ref } from "vue";
 import { getItemList } from "@/api/catalogAPI";
 import CatalogSort from "@/components/TheCatalog/CatalogSort";
 import CatalogItem from "@/components/TheCatalog/CatalogItem";
+import { useSort } from "@/components/TheCatalog/hooks";
 
-export default {
-  components: { CatalogSort, CatalogItem },
+const itemList = ref([]);
+const { sortOptions, selectedSort, sortedList } = useSort(itemList);
 
-  name: "TheCatalog",
-
-  data: () => ({
-    sortOptions: [
-      { label: "По наименованию", value: "name" },
-      { label: "По цене min", value: "priceUp" },
-      { label: "По цене max", value: "priceDown" },
-    ],
-    selectedSort: "",
-    itemList: [],
-  }),
-
-  methods: {
-    setSelectedSort(value) {
-      this.selectedSort = value;
-    },
-    deleteItem(id) {
-      const itemIndex = this.itemList.findIndex((item) => item.id === id);
-      this.itemList.splice(itemIndex, 1);
-    },
-    async fetchItemList() {
-      try {
-        const response = await getItemList();
-        this.itemList = response;
-      } catch (e) {
-        console.error("Ошибка загрузки");
-      }
-    },
-  },
-
-  computed: {
-    sortedItemList() {
-      const compare = {
-        name: (a, b) => a.name.localeCompare(b.name),
-        priceUp: (a, b) => a.price - b.price,
-        priceDown: (a, b) => b.price - a.price,
-      };
-      return [...this.itemList].sort(compare[this.selectedSort || "name"]);
-    },
-  },
-
-  mounted() {
-    this.fetchItemList();
-  },
+const deleteItem = (deleteId) => {
+  const itemIndex = itemList.value.findIndex((item) => item.id === deleteId);
+  itemList.value.splice(itemIndex, 1);
 };
+
+const fetchItemList = async () => {
+  try {
+    const response = await getItemList();
+    itemList.value = response;
+  } catch (e) {
+    console.error("Ошибка загрузки");
+  }
+};
+onMounted(fetchItemList);
 </script>
 
 <style lang="scss" scoped>
