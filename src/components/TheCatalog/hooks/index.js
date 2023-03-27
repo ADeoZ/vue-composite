@@ -1,0 +1,1 @@
+export { useSort } from '@/components/TheCatalog/hooks/useSort';
