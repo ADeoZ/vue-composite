@@ -12,7 +12,6 @@
 
 <script setup>
 // сделать preloader
-// сохранение списка в localStorage
 import { onMounted } from "vue";
 import { getItemList } from "@/api/catalogAPI";
 import CatalogSort from "@/components/TheCatalog/CatalogSort";
@@ -20,14 +19,13 @@ import CatalogItem from "@/components/TheCatalog/CatalogItem";
 import PreloaderContent from "@/components/PreloaderContent";
 import { useFetchData, useSort } from "@/components/TheCatalog/hooks";
 
-const { fetchData, data: itemList, isLoading } = useFetchData(getItemList);
+const { fetchData, data: itemList, isLoading } = useFetchData(getItemList, "catalog");
 const { sortOptions, selectedSort, sortedList } = useSort(itemList);
 
 onMounted(fetchData);
 
 const deleteItem = (deleteId) => {
-  const itemIndex = itemList.value.findIndex((item) => item.id === deleteId);
-  itemList.value.splice(itemIndex, 1);
+  itemList.value = itemList.value.filter((item) => item.id !== deleteId );
 };
 </script>
 
