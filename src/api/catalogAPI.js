@@ -62,6 +62,6 @@ const itemList = [
 
 export const getItemList = () => {
   return new Promise((resolve) => {
-    setTimeout(resolve, 800, itemList);
+    setTimeout(resolve, 800, { data: itemList });
   });
-}
+};

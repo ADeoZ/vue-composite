@@ -3,7 +3,8 @@
     <div class="catalog__controls">
       <catalog-sort v-model="selectedSort" :options="sortOptions" />
     </div>
-    <ul class="catalog__list">
+    <preloader-content v-if="isLoading" />
+    <ul class="catalog__list" v-else>
       <catalog-item v-for="item in sortedList" :item="item" :key="item.id" @delete="deleteItem" />
     </ul>
   </section>
@@ -12,29 +13,22 @@
 <script setup>
 // сделать preloader
 // сохранение списка в localStorage
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { getItemList } from "@/api/catalogAPI";
 import CatalogSort from "@/components/TheCatalog/CatalogSort";
 import CatalogItem from "@/components/TheCatalog/CatalogItem";
-import { useSort } from "@/components/TheCatalog/hooks";
+import PreloaderContent from "@/components/PreloaderContent";
+import { useFetchData, useSort } from "@/components/TheCatalog/hooks";
 
-const itemList = ref([]);
+const { fetchData, data: itemList, isLoading } = useFetchData(getItemList);
 const { sortOptions, selectedSort, sortedList } = useSort(itemList);
+
+onMounted(fetchData);
 
 const deleteItem = (deleteId) => {
   const itemIndex = itemList.value.findIndex((item) => item.id === deleteId);
   itemList.value.splice(itemIndex, 1);
 };
-
-const fetchItemList = async () => {
-  try {
-    const response = await getItemList();
-    itemList.value = response;
-  } catch (e) {
-    console.error("Ошибка загрузки");
-  }
-};
-onMounted(fetchItemList);
 </script>
 
 <style lang="scss" scoped>
