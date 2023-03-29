@@ -11,12 +11,11 @@
 </template>
 
 <script setup>
-// сделать preloader
 import { onMounted } from "vue";
-import { getItemList } from "@/api/catalogAPI";
 import CatalogSort from "@/components/TheCatalog/CatalogSort";
 import CatalogItem from "@/components/TheCatalog/CatalogItem";
 import PreloaderContent from "@/components/PreloaderContent";
+import { getItemList } from "@/api/catalogAPI";
 import { useFetchData, useSort } from "@/components/TheCatalog/hooks";
 
 const { fetchData, data: itemList, isLoading } = useFetchData(getItemList, "catalog");
@@ -24,9 +23,7 @@ const { sortOptions, selectedSort, sortedList } = useSort(itemList);
 
 onMounted(fetchData);
 
-const deleteItem = (deleteId) => {
-  itemList.value = itemList.value.filter((item) => item.id !== deleteId );
-};
+const deleteItem = (deleteId) => (itemList.value = itemList.value.filter((item) => item.id !== deleteId));
 </script>
 
 <style lang="scss" scoped>
