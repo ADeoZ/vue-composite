@@ -2,16 +2,7 @@
   <aside class="controls">
     <header class="controls__title"><h2>Добавление товара</h2></header>
     <form class="form_add-item">
-      <label class="form__label form__label_required">
-        <div class="form__label__text">Наименование товара</div>
-        <input
-          type="text"
-          name="item-name"
-          placeholder="Введите наименование товара"
-          class="form__input form__invalid"
-        />
-        <div class="form__error">Поле является обязательным</div>
-      </label>
+      <v-text-field v-model="itemForm.name" label="Наименование товара" placeholder="Введите наименование товара" required />      
       <label class="form__label">
         <div class="form__label__text">Описание товара</div>
         <textarea
@@ -21,22 +12,19 @@
         ></textarea>
         <div class="form__error">Поле является обязательным</div>
       </label>
-      <label class="form__label form__label_required">
-        <div class="form__label__text">Ссылка на изображение товара</div>
-        <input type="text" name="item-image" placeholder="Введите ссылку" class="form__input" />
-        <div class="form__error">Поле является обязательным</div>
-      </label>
-      <label class="form__label form__label_required">
-        <div class="form__label__text">Цена товара</div>
-        <input type="text" name="item-price" placeholder="Введите цену" class="form__input" />
-        <div class="form__error"></div>
-      </label>
+      <v-text-field v-model="itemForm.image" label="Ссылка на изображение товара" placeholder="Введите ссылку" required />
+      <v-text-field v-model="itemForm.price" label="Цена товара" placeholder="Введите цену" required />
       <button class="form__button" type="submit">Добавить товар</button>
     </form>
   </aside>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import { VTextField } from "@/components/Inputs";
+
+const itemForm = ref({ name: "", image: "", price: "" });
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/style.scss";
