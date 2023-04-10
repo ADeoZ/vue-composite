@@ -1,8 +1,15 @@
 <template>
   <aside class="controls">
-    <header class="controls__title"><h2>Добавление товара</h2></header>
+    <header class="controls__title">
+      <h2>Добавление товара</h2>
+    </header>
     <form class="form_add-item">
-      <v-text-field v-model="itemForm.name" label="Наименование товара" placeholder="Введите наименование товара" required />      
+      <v-text-field
+        v-model="itemForm.name"
+        label="Наименование товара"
+        placeholder="Введите наименование товара"
+        required
+      />
       <label class="form__label">
         <div class="form__label__text">Описание товара</div>
         <textarea
@@ -12,7 +19,12 @@
         ></textarea>
         <div class="form__error">Поле является обязательным</div>
       </label>
-      <v-text-field v-model="itemForm.image" label="Ссылка на изображение товара" placeholder="Введите ссылку" required />
+      <v-text-field
+        v-model="itemForm.image"
+        label="Ссылка на изображение товара"
+        placeholder="Введите ссылку"
+        required
+      />
       <v-text-field v-model="itemForm.price" label="Цена товара" placeholder="Введите цену" required />
       <button class="form__button" type="submit">Добавить товар</button>
     </form>
