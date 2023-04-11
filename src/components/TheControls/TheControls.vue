@@ -24,7 +24,7 @@
         required
       />
       <v-text-field v-model="itemForm.price" label="Цена товара" placeholder="Введите цену" required />
-      <button class="form__button" type="submit">Добавить товар</button>
+      <v-button label="Добавить товар" submitButton />
     </form>
   </aside>
 </template>
@@ -32,6 +32,7 @@
 <script setup>
 import { ref } from "vue";
 import VTextField from "@/components/VTextField";
+import VButton from "@/components/VButton";
 
 const itemForm = ref({ name: "", description: "", image: "", price: "" });
 </script>
@@ -60,111 +61,6 @@ const itemForm = ref({ name: "", description: "", image: "", price: "" });
 
   @media (max-height: 460px) {
     position: inherit;
-  }
-}
-
-.form {
-  &__label {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    &__text {
-      position: relative;
-      color: $font-form;
-      font-size: 0.625rem;
-      line-height: 1.3em;
-      letter-spacing: -0.02em;
-    }
-
-    &_required > &__text::after {
-      content: "";
-      position: absolute;
-      right: -0.3125rem;
-      width: 0.25rem;
-      height: 0.25rem;
-      border-radius: 50%;
-      background-color: $salmon;
-    }
-  }
-
-  &__input,
-  &__textarea {
-    width: 100%;
-    margin: 0.25rem 0 1rem;
-    padding: 0.625rem 1rem 0.6875rem;
-    background-color: $whitey;
-    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
-    border-radius: $bradius;
-
-    font-size: 0.75rem;
-    line-height: 1.25em;
-    color: $font-main;
-
-    &::placeholder {
-      color: $font-disabled;
-    }
-
-    &:focus {
-      @include focused;
-    }
-  }
-
-  &__textarea {
-    display: block;
-    height: 6.75rem;
-    resize: none;
-  }
-
-  &__invalid {
-    margin-bottom: 0.25rem;
-    outline: 1px solid $salmon;
-  }
-
-  &__error {
-    display: none;
-    min-height: 0.625rem;
-    margin-bottom: 0.125rem;
-    overflow: auto;
-    font-size: 0.5rem;
-    line-height: 1.25em;
-    letter-spacing: -0.02em;
-    color: $salmon;
-  }
-
-  &__invalid + &__error {
-    display: block;
-  }
-
-  &__button {
-    width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.625rem 1rem 0.6875rem;
-    @include button($green);
-    font-family: "Inter", "Source Sans Pro", Verdana, sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 0.75rem;
-    line-height: 1.25em;
-    color: #ffffff;
-    transition: background-color 0.2s ease-in;
-
-    &:disabled {
-      background-color: $button-disabled;
-      color: $font-disabled;
-    }
-
-    &:focus {
-      @include focused;
-    }
-
-    &:hover {
-      background-color: darker($green, 1);
-    }
-
-    &:active {
-      background-color: lighter($green, 1);
-    }
   }
 }
 </style>
