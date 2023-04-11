@@ -1,11 +1,12 @@
 <template>
-  <label v-bind:class="['label', { label_required: required }]">
+  <label :class="['label', { label_required: required }]">
     <div class="label__text" v-if="!!label">{{ label }}</div>
-    <input
-      type="text"
-      name="item-name"
+    <component
+      :is="fieldType"
+      :type="fieldType === 'input' ? 'text' : null"
       :placeholder="placeholder"
-      v-bind:class="['input', { input_invalid: !!error }]"
+      :class="[fieldType, { invalid: !!error }]"
+      :aria-invalid="error || null"
       :value="modelValue"
       @input="setValue"
     />
@@ -22,6 +23,10 @@ defineProps({
   modelValue: {
     type: String,
     required: true,
+  },
+  fieldType: {
+    validator: (type) => ["input", "textarea"].includes(type),
+    default: "input",
   },
   label: {
     type: String,
@@ -72,7 +77,8 @@ const setValue = (event) => {
   }
 }
 
-.input {
+.input,
+.textarea {
   width: 100%;
   margin: 0.25rem 0 1rem;
   padding: 0.625rem 1rem 0.6875rem;
@@ -91,15 +97,21 @@ const setValue = (event) => {
   &:focus {
     @include focused;
   }
+}
 
-  &_invalid {
-    margin-bottom: 0.25rem;
-    outline: 1px solid $salmon;
-  }
+.textarea {
+  display: block;
+  height: 6.75rem;
+  resize: none;
+}
 
-  &_invalid + .error {
-    display: block;
-  }
+.invalid {
+  margin-bottom: 0.25rem;
+  outline: 1px solid $salmon;
+}
+
+.invalid + .error {
+  display: block;
 }
 
 .error {

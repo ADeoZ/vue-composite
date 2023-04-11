@@ -10,15 +10,13 @@
         placeholder="Введите наименование товара"
         required
       />
-      <label class="form__label">
-        <div class="form__label__text">Описание товара</div>
-        <textarea
-          name="item-description"
-          placeholder="Введите описание товара"
-          class="form__textarea form__invalid"
-        ></textarea>
-        <div class="form__error">Поле является обязательным</div>
-      </label>
+      <v-text-field
+        field-type="textarea"
+        v-model="itemForm.description"
+        label="Описание товара"
+        placeholder="Введите описание товара"
+        error
+      />
       <v-text-field
         v-model="itemForm.image"
         label="Ссылка на изображение товара"
@@ -33,9 +31,9 @@
 
 <script setup>
 import { ref } from "vue";
-import { VTextField } from "@/components/Inputs";
+import VTextField from "@/components/VTextField";
 
-const itemForm = ref({ name: "", image: "", price: "" });
+const itemForm = ref({ name: "", description: "", image: "", price: "" });
 </script>
 
 <style lang="scss" scoped>
