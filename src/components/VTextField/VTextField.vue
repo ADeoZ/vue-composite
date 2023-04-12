@@ -7,7 +7,7 @@
       :placeholder="placeholder"
       :class="[fieldType, { invalid: !!error }]"
       :aria-invalid="error || null"
-      :value="modelValue"
+      :value="valueFormatted"
       @input="setValue"
     />
     <div class="error" v-if="!!error">
@@ -17,9 +17,9 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, toRef, computed } from "vue";
 
-defineProps({
+const props = defineProps({
   modelValue: {
     type: String,
     required: true,
@@ -43,7 +43,14 @@ defineProps({
     type: [Boolean, String],
     default: false,
   },
+  format: {
+    type: Function,
+    default: null,
+  },
 });
+
+const modelValue = toRef(props, "modelValue");
+const valueFormatted = computed(() => (props.format ? props.format(modelValue.value) : modelValue.value));
 
 const emit = defineEmits(["update:modelValue"]);
 const setValue = (event) => {

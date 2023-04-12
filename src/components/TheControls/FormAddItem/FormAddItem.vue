@@ -19,7 +19,13 @@
       placeholder="Введите ссылку"
       required
     />
-    <v-text-field v-model="itemForm.price" label="Цена товара" placeholder="Введите цену" required />
+    <v-text-field
+      v-model="itemForm.price"
+      label="Цена товара"
+      placeholder="Введите цену"
+      :format="formatPrice"
+      required
+    />
     <v-button label="Добавить товар" submitButton />
   </form>
 </template>
@@ -30,6 +36,11 @@ import VTextField from "@/components/VTextField";
 import VButton from "@/components/VButton";
 
 const itemForm = ref({ name: "", description: "", image: "", price: "" });
+
+const formatPrice = (value) => {
+  const priceToNum = parseInt(value.replace(/\s/g, ""), 10);
+  return Number.isNaN(priceToNum) ? "" : priceToNum.toLocaleString();
+};
 </script>
 
 <style lang="scss" scoped>
