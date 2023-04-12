@@ -7,18 +7,23 @@
       :placeholder="placeholder"
       :class="[fieldType, { invalid: !!error }]"
       :aria-invalid="error || null"
-      :value="valueFormatted"
-      @input="setValue"
+      :value="modelValue"
+      @input="
+        (event) => {
+          validate(event);
+          setValue(event);
+        }
+      "
       @blur="validate"
     />
     <div class="error" v-if="!!error">
-      {{ typeof error === "string" ? error : "Поле является обязательным" }}
+      {{ error }}
     </div>
   </label>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, toRef, computed } from "vue";
+import { defineProps, defineEmits, ref } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -43,9 +48,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  error: {
-    type: [Boolean, String],
-    default: false,
+  validation: {
+    type: Array,
+    default: () => [],
   },
   format: {
     type: Function,
@@ -53,21 +58,27 @@ const props = defineProps({
   },
 });
 
-const validate = () => console.log('validate');
+// validation
+const error = ref("");
+const validate = (event) => {
+  error.value = "";
+  const checkingValue = event.target.value;
+  for (const rule of props.validation) {
+    if (!rule.check(checkingValue)) {
+      error.value = rule.error;
+      break;
+    }
+  }
+};
 
-const modelValue = toRef(props, "modelValue");
-const valueFormatted = computed(() => {
-  return props.format ? props.format(modelValue.value) : modelValue.value;
-});
-
+// emit input value
 const emit = defineEmits(["update:modelValue"]);
 const setValue = (event) => {
   let value = event.target.value;
-
+  // formatting value
   if (props.modelModifiers.format) {
     value = props.format(value);
   }
-
   emit("update:modelValue", value);
 };
 </script>
