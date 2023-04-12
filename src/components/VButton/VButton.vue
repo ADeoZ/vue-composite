@@ -37,15 +37,15 @@ defineProps({
     color: $font-disabled;
   }
 
-  &:focus {
+  &:not(:disabled):focus {
     @include focused;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: darker($green, 1);
   }
 
-  &:active {
+  &:not(:disabled):active {
     background-color: lighter($green, 1);
   }
 }
