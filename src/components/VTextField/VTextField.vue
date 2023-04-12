@@ -9,6 +9,7 @@
       :aria-invalid="error || null"
       :value="valueFormatted"
       @input="setValue"
+      @blur="validate"
     />
     <div class="error" v-if="!!error">
       {{ typeof error === "string" ? error : "Поле является обязательным" }}
@@ -23,6 +24,9 @@ const props = defineProps({
   modelValue: {
     type: String,
     required: true,
+  },
+  modelModifiers: {
+    default: () => ({}),
   },
   fieldType: {
     validator: (type) => ["input", "textarea"].includes(type),
@@ -49,12 +53,22 @@ const props = defineProps({
   },
 });
 
+const validate = () => console.log('validate');
+
 const modelValue = toRef(props, "modelValue");
-const valueFormatted = computed(() => (props.format ? props.format(modelValue.value) : modelValue.value));
+const valueFormatted = computed(() => {
+  return props.format ? props.format(modelValue.value) : modelValue.value;
+});
 
 const emit = defineEmits(["update:modelValue"]);
 const setValue = (event) => {
-  emit("update:modelValue", event.target.value);
+  let value = event.target.value;
+
+  if (props.modelModifiers.format) {
+    value = props.format(value);
+  }
+
+  emit("update:modelValue", value);
 };
 </script>
 
