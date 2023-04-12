@@ -1,45 +1,54 @@
 <template>
   <form class="form_add-item">
     <v-text-field
-      v-model="itemForm.name"
+      v-model="itemsForm.name"
+      v-model:error="errorsForm.name"
+      :validation="validations"
       label="Наименование товара"
       placeholder="Введите наименование товара"
       required
     />
     <v-text-field
       field-type="textarea"
-      v-model="itemForm.description"
+      v-model="itemsForm.description"
       label="Описание товара"
       placeholder="Введите описание товара"
-      error
     />
     <v-text-field
-      v-model="itemForm.image"
+      v-model="itemsForm.image"
+      v-model:error="errorsForm.image"
+      :validation="validations"
       label="Ссылка на изображение товара"
       placeholder="Введите ссылку"
       required
     />
     <v-text-field
-      v-model="itemForm.price"
+      v-model.format="itemsForm.price"
+      v-model:error="errorsForm.price"
+      :validation="validations"
       label="Цена товара"
       placeholder="Введите цену"
       :format="formatPrice"
       required
     />
-    <v-button label="Добавить товар" submitButton />
+    <v-button label="Добавить товар" submitButton :disabled="isValidForm" />
   </form>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import VTextField from "@/components/VTextField";
 import VButton from "@/components/VButton";
 
-const itemForm = ref({ name: "", description: "", image: "", price: "" });
+const itemsForm = ref({ name: "", description: "", image: "", price: "" });
+
+const errorsForm = ref({ name: true, image: true, price: true });
+const validations = [{ check: (value) => value.length > 0, error: "Поле является обязательным" }];
+const isValidForm = computed(() => Object.values(errorsForm.value).some(Boolean));
 
 const formatPrice = (value) => {
   const priceToNum = parseInt(value.replace(/\s/g, ""), 10);
-  return Number.isNaN(priceToNum) ? "" : priceToNum.toLocaleString();
+  return Number.isNaN(priceToNum) ? "" : Intl.NumberFormat().format(priceToNum);
 };
 </script>
 

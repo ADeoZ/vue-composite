@@ -57,6 +57,7 @@ const props = defineProps({
     default: null,
   },
 });
+const emit = defineEmits(["update:modelValue", "update:error"]);
 
 // validation
 const error = ref("");
@@ -66,13 +67,14 @@ const validate = (event) => {
   for (const rule of props.validation) {
     if (!rule.check(checkingValue)) {
       error.value = rule.error;
-      break;
+      emit("update:error", true);
+      return;
     }
   }
+  emit("update:error", false);
 };
 
 // emit input value
-const emit = defineEmits(["update:modelValue"]);
 const setValue = (event) => {
   let value = event.target.value;
   // formatting value
