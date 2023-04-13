@@ -3,7 +3,7 @@
     <v-text-field
       v-model="itemsForm.name"
       v-model:error="errorsForm.name"
-      :validation="validations"
+      :validation="[validations.required]"
       label="Наименование товара"
       placeholder="Введите наименование товара"
       required
@@ -17,7 +17,7 @@
     <v-text-field
       v-model="itemsForm.image"
       v-model:error="errorsForm.image"
-      :validation="validations"
+      :validation="[validations.required]"
       label="Ссылка на изображение товара"
       placeholder="Введите ссылку"
       required
@@ -25,10 +25,10 @@
     <v-text-field
       v-model.format="itemsForm.price"
       v-model:error="errorsForm.price"
-      :validation="validations"
+      :validation="[validations.required, validations.isNumber]"
       label="Цена товара"
       placeholder="Введите цену"
-      :format="formatPrice"
+      :format="format.price"
       required
     />
     <v-button label="Добавить товар" submitButton :disabled="isValidForm" />
@@ -37,19 +37,13 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { validations, format } from "@/components/TheControls/FormAddItem/helpers";
 import VTextField from "@/components/VTextField";
 import VButton from "@/components/VButton";
 
 const itemsForm = ref({ name: "", description: "", image: "", price: "" });
-
 const errorsForm = ref({ name: true, image: true, price: true });
-const validations = [{ check: (value) => value.length > 0, error: "Поле является обязательным" }];
 const isValidForm = computed(() => Object.values(errorsForm.value).some(Boolean));
-
-const formatPrice = (value) => {
-  const priceToNum = parseInt(value.replace(/\s/g, ""), 10);
-  return Number.isNaN(priceToNum) ? "" : Intl.NumberFormat().format(priceToNum);
-};
 </script>
 
 <style lang="scss" scoped>
