@@ -5,11 +5,13 @@ const fetchMethod = getItemList;
 const localStorageKey = "catalog";
 
 const localData = JSON.parse(localStorage.getItem(localStorageKey));
-const data = ref(localData ?? []);
+const itemList = ref(localData ?? []);
+
+const deleteItem = (deleteId) => (itemList.value = itemList.value.filter((item) => item.id !== deleteId));
 
 export const useFetchData = () => {
-  watch(data, () => {
-    localStorage.setItem(localStorageKey, JSON.stringify(data.value));
+  watch(itemList, () => {
+    localStorage.setItem(localStorageKey, JSON.stringify(itemList.value));
   });
 
   const isLoading = ref(false);
@@ -20,7 +22,7 @@ export const useFetchData = () => {
     try {
       isLoading.value = true;
       const response = await fetchMethod();
-      data.value = response.data;
+      itemList.value = response.data;
     } catch (e) {
       console.error("Ошибка загрузки");
     } finally {
@@ -30,5 +32,5 @@ export const useFetchData = () => {
 
   onMounted(fetchData);
 
-  return { data, isLoading };
+  return { itemList, isLoading, deleteItem };
 };

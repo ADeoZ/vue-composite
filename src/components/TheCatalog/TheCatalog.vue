@@ -16,10 +16,8 @@ import CatalogItem from "@/components/TheCatalog/CatalogItem";
 import PreloaderContent from "@/components/PreloaderContent";
 import { useFetchData, useSort } from "@/components/hooks";
 
-const { data: itemList, isLoading } = useFetchData();
+const { itemList, isLoading, deleteItem } = useFetchData();
 const { sortOptions, selectedSort, sortedList } = useSort(itemList);
-
-const deleteItem = (deleteId) => (itemList.value = itemList.value.filter((item) => item.id !== deleteId));
 </script>
 
 <style lang="scss" scoped>
