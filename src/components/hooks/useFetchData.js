@@ -1,8 +1,13 @@
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
+import { getItemList } from "@/api/catalogAPI";
 
-export const useFetchData = (fetchMethod, localStorageKey) => {
-  const localData = JSON.parse(localStorage.getItem(localStorageKey));
-  const data = ref(localData ?? []);
+const fetchMethod = getItemList;
+const localStorageKey = "catalog";
+
+const localData = JSON.parse(localStorage.getItem(localStorageKey));
+const data = ref(localData ?? []);
+
+export const useFetchData = () => {
   watch(data, () => {
     localStorage.setItem(localStorageKey, JSON.stringify(data.value));
   });
@@ -23,5 +28,7 @@ export const useFetchData = (fetchMethod, localStorageKey) => {
     }
   };
 
-  return { fetchData, data, isLoading };
+  onMounted(fetchData);
+
+  return { data, isLoading };
 };
