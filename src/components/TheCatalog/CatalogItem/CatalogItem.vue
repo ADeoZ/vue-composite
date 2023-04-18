@@ -1,7 +1,7 @@
 <template>
   <li class="item">
     <div class="item__image">
-      <img :src="item.image" alt="Фото товара" @error="errorSrc"/>
+      <img :src="item.image" alt="Фото товара" @error="errorSrc" />
     </div>
     <div class="item__content">
       <header class="item__name">{{ item.name }}</header>
@@ -16,7 +16,7 @@
 
 <script setup>
 import { defineProps, defineEmits, toRef, computed } from "vue";
-import nophoto from "@/assets/images/nophoto.png"
+import nophoto from "@/assets/images/nophoto.png";
 
 const props = defineProps({
   item: {
@@ -28,7 +28,7 @@ const item = toRef(props, "item");
 
 const priceFormatted = computed(() => `${item.value.price.toLocaleString()} руб.`);
 
-const errorSrc = () => item.value.image = nophoto;
+const errorSrc = () => (item.value.image = nophoto);
 
 const emit = defineEmits(["delete"]);
 const deleteItem = () => {
@@ -76,6 +76,7 @@ const deleteItem = () => {
     font-weight: 600;
     font-size: 1.5rem;
     line-height: 1.25em;
+    word-wrap: break-word;
   }
 
   &__delete {
