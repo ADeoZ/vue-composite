@@ -31,7 +31,7 @@
       :format="format.price"
       required
     />
-    <v-button label="Добавить товар" submitButton :disabled="isValidForm || isLoading" />
+    <v-button label="Добавить товар" submitButton :disabled="!isValidForm || isLoading" />
   </form>
 </template>
 
@@ -45,10 +45,11 @@ import { useFetchData } from "@/components/hooks";
 const initialForm = { name: "", description: "", image: "", price: "" };
 const itemsForm = ref({ ...initialForm });
 const errorsForm = ref({ name: true, image: true, price: true });
-const isValidForm = computed(() => Object.values(errorsForm.value).some(Boolean));
+const isValidForm = computed(() => !Object.values(errorsForm.value).some(Boolean));
 
 const { addItem, isLoading } = useFetchData();
 const submitForm = () => {
+  if (!isValidForm.value) return;
   addItem(itemsForm.value);
   itemsForm.value = { ...initialForm };
 };
