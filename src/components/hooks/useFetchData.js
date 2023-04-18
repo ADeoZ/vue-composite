@@ -12,15 +12,12 @@ watch(itemList, () => {
   localStorage.setItem(localStorageKey, JSON.stringify(itemList.value));
 });
 
-// проверка loading на кнопку формы
-// тест на очень крупные значения и длинные описания
-// статус успешного добавления
-// переписать метод
 // add item
 const addItem = (itemData) => {
-  const lastId = itemList.value[itemList.value.length - 1].id;
-  itemList.value = [...itemList.value, {...itemData, price: +itemData.price.replace(/\s/g, ""), id: lastId + 1}];
-}
+  const maxId = itemList.value.reduce((max, item) => (max > item.id ? max : item.id));
+  const newItem = { ...itemData, id: maxId + 1, price: +itemData.price.replace(/\s/g, "") };
+  itemList.value = [...itemList.value, newItem];
+};
 
 // delete item
 const deleteItem = (deleteId) => (itemList.value = itemList.value.filter((item) => item.id !== deleteId));
