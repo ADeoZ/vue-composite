@@ -12,7 +12,6 @@ watch(itemList, () => {
   localStorage.setItem(localStorageKey, JSON.stringify(itemList.value));
 });
 
-// очистка формы
 // проверка loading на кнопку формы
 // тест на очень крупные значения и длинные описания
 // статус успешного добавления
@@ -21,7 +20,6 @@ watch(itemList, () => {
 const addItem = (itemData) => {
   const lastId = itemList.value[itemList.value.length - 1].id;
   itemList.value = [...itemList.value, {...itemData, price: +itemData.price.replace(/\s/g, ""), id: lastId + 1}];
-  console.log(itemList.value);
 }
 
 // delete item

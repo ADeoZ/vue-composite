@@ -42,12 +42,16 @@ import VTextField from "@/components/VTextField";
 import VButton from "@/components/VButton";
 import { useFetchData } from "@/components/hooks";
 
-const itemsForm = ref({ name: "", description: "", image: "", price: "" });
+const initialForm = { name: "", description: "", image: "", price: "" };
+const itemsForm = ref({ ...initialForm });
 const errorsForm = ref({ name: true, image: true, price: true });
 const isValidForm = computed(() => Object.values(errorsForm.value).some(Boolean));
 
 const { addItem } = useFetchData();
-const submitForm = () => addItem(itemsForm);
+const submitForm = () => {
+  addItem(itemsForm.value);
+  itemsForm.value = { ...initialForm };
+};
 </script>
 
 <style lang="scss" scoped>
