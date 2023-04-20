@@ -5,13 +5,13 @@
       :is="fieldType"
       :type="fieldType === 'input' ? 'text' : null"
       :placeholder="placeholder"
-      :class="[fieldType, { invalid: !!error && touched }]"
+      :class="[fieldType, { invalid: !!error && modelValue.touched }]"
       :aria-invalid="error || null"
-      :value="modelValue"
+      :value="modelValue.value"
       @input="setValue"
-      @blur="$emit('update:touched', true)"
+      @blur="$emit('update:modelValue', { ...modelValue, touched: true })"
     />
-    <div class="error" v-if="!!error && touched">
+    <div class="error" v-if="!!error && modelValue.touched">
       {{ error }}
     </div>
   </label>
@@ -22,14 +22,7 @@ import { defineProps, defineEmits, ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: {
-    type: String,
-    required: true,
-  },
-  modelModifiers: {
-    default: () => ({}),
-  },
-  touched: {
-    type: Boolean,
+    type: Object,
     required: true,
   },
   fieldType: {
@@ -56,7 +49,7 @@ const props = defineProps({
     default: null,
   },
 });
-const emit = defineEmits(["update:modelValue", "update:error", "update:touched"]);
+const emit = defineEmits(["update:modelValue"]);
 
 // validation
 const error = ref("");
@@ -65,27 +58,22 @@ const validate = (checkingValue) => {
   for (const rule of props.validation) {
     if (!rule.check(checkingValue.trim())) {
       error.value = rule.error;
-      emit("update:error", true);
+      emit("update:modelValue", { ...props.modelValue, error: true });
       return;
     }
   }
-  emit("update:error", false);
+  emit("update:modelValue", { ...props.modelValue, error: false });
 };
-watch(
-  () => props.modelValue,
-  validate,
-  { immediate: true }
-);
+watch(() => props.modelValue.value, validate, { immediate: true });
 
 // emit input value
 const setValue = (event) => {
   let value = event.target.value;
   // formatting value
-  if (props.modelModifiers.format) {
+  if (props.format) {
     value = props.format(value);
   }
-  emit("update:touched", true);
-  emit("update:modelValue", value);
+  emit("update:modelValue", { ...props.modelValue, value, touched: true });
 };
 </script>
 

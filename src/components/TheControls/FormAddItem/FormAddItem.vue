@@ -1,9 +1,7 @@
 <template>
   <form class="form_add-item" @submit.prevent="submitForm">
     <v-text-field
-      v-model="formModel.name.value"
-      v-model:error="formModel.name.error"
-      v-model:touched="formModel.name.touched"
+      v-model="formModel.name"
       :validation="[validations.required]"
       label="Наименование товара"
       placeholder="Введите наименование товара"
@@ -11,26 +9,20 @@
     />
     <v-text-field
       field-type="textarea"
-      v-model="formModel.description.value"
-      v-model:error="formModel.description.error"
-      v-model:touched="formModel.description.touched"
+      v-model="formModel.description"
       :validation="[]"
       label="Описание товара"
       placeholder="Введите описание товара"
     />
     <v-text-field
-      v-model="formModel.image.value"
-      v-model:error="formModel.image.error"
-      v-model:touched="formModel.image.touched"
+      v-model="formModel.image"
       :validation="[validations.required]"
       label="Ссылка на изображение товара"
       placeholder="Введите ссылку"
       required
     />
     <v-text-field
-      v-model.format="formModel.price.value"
-      v-model:error="formModel.price.error"
-      v-model:touched="formModel.price.touched"
+      v-model="formModel.price"
       :validation="[validations.required, validations.isNumber]"
       label="Цена товара"
       placeholder="Введите цену"
