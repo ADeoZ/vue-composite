@@ -5,25 +5,20 @@
       :is="fieldType"
       :type="fieldType === 'input' ? 'text' : null"
       :placeholder="placeholder"
-      :class="[fieldType, { invalid: !!error }]"
+      :class="[fieldType, { invalid: !!error && touched }]"
       :aria-invalid="error || null"
       :value="modelValue"
-      @input="
-        (event) => {
-          validate(event);
-          setValue(event);
-        }
-      "
-      @blur="validate"
+      @input="setValue"
+      @blur="$emit('update:touched', true)"
     />
-    <div class="error" v-if="!!error">
+    <div class="error" v-if="!!error && touched">
       {{ error }}
     </div>
   </label>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -32,6 +27,10 @@ const props = defineProps({
   },
   modelModifiers: {
     default: () => ({}),
+  },
+  touched: {
+    type: Boolean,
+    required: true,
   },
   fieldType: {
     validator: (type) => ["input", "textarea"].includes(type),
@@ -57,15 +56,14 @@ const props = defineProps({
     default: null,
   },
 });
-const emit = defineEmits(["update:modelValue", "update:error"]);
+const emit = defineEmits(["update:modelValue", "update:error", "update:touched"]);
 
 // validation
 const error = ref("");
-const validate = (event) => {
+const validate = (checkingValue) => {
   error.value = "";
-  const checkingValue = event.target.value;
   for (const rule of props.validation) {
-    if (!rule.check(checkingValue)) {
+    if (!rule.check(checkingValue.trim())) {
       error.value = rule.error;
       emit("update:error", true);
       return;
@@ -73,6 +71,11 @@ const validate = (event) => {
   }
   emit("update:error", false);
 };
+watch(
+  () => props.modelValue,
+  validate,
+  { immediate: true }
+);
 
 // emit input value
 const setValue = (event) => {
@@ -81,6 +84,7 @@ const setValue = (event) => {
   if (props.modelModifiers.format) {
     value = props.format(value);
   }
+  emit("update:touched", true);
   emit("update:modelValue", value);
 };
 </script>
