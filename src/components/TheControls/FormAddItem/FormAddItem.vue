@@ -1,8 +1,9 @@
 <template>
   <form class="form_add-item" @submit.prevent="submitForm">
     <v-text-field
-      v-model="itemsForm.name"
-      v-model:error="errorsForm.name"
+      v-model="formModel.name.value"
+      v-model:error="formModel.name.error"
+      v-model:touched="formModel.name.touched"
       :validation="[validations.required]"
       label="Наименование товара"
       placeholder="Введите наименование товара"
@@ -10,48 +11,50 @@
     />
     <v-text-field
       field-type="textarea"
-      v-model="itemsForm.description"
+      v-model="formModel.description.value"
+      v-model:error="formModel.description.error"
+      v-model:touched="formModel.description.touched"
+      :validation="[]"
       label="Описание товара"
       placeholder="Введите описание товара"
     />
     <v-text-field
-      v-model="itemsForm.image"
-      v-model:error="errorsForm.image"
+      v-model="formModel.image.value"
+      v-model:error="formModel.image.error"
+      v-model:touched="formModel.image.touched"
       :validation="[validations.required]"
       label="Ссылка на изображение товара"
       placeholder="Введите ссылку"
       required
     />
     <v-text-field
-      v-model.format="itemsForm.price"
-      v-model:error="errorsForm.price"
+      v-model.format="formModel.price.value"
+      v-model:error="formModel.price.error"
+      v-model:touched="formModel.price.touched"
       :validation="[validations.required, validations.isNumber]"
       label="Цена товара"
       placeholder="Введите цену"
       :format="format.price"
       required
     />
-    <v-button label="Добавить товар" submitButton :disabled="!isValidForm || isLoading" />
+    <v-button label="Добавить товар" submitButton :disabled="!isFormValid || isLoading" />
   </form>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
 import { validations, format } from "@/components/TheControls/FormAddItem/helpers";
 import VTextField from "@/components/VTextField";
 import VButton from "@/components/VButton";
-import { useFetchData } from "@/components/hooks";
+import { useFetchData, useFormModel } from "@/components/hooks";
 
 const initialForm = { name: "", description: "", image: "", price: "" };
-const itemsForm = ref({ ...initialForm });
-const errorsForm = ref({ name: true, image: true, price: true });
-const isValidForm = computed(() => !Object.values(errorsForm.value).some(Boolean));
+const { formModel, getFormValues, isFormValid, resetForm } = useFormModel(initialForm);
 
 const { addItem, isLoading } = useFetchData();
 const submitForm = () => {
-  if (!isValidForm.value) return;
-  addItem(itemsForm.value);
-  itemsForm.value = { ...initialForm };
+  if (!isFormValid.value) return;
+  addItem(getFormValues());
+  resetForm();
 };
 </script>
 
