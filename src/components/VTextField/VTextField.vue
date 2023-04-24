@@ -11,9 +11,11 @@
       @input="setValue"
       @blur="$emit('update:modelValue', { ...modelValue, touched: true })"
     />
-    <div class="error" v-if="!!error && modelValue.touched">
-      {{ error }}
-    </div>
+    <transition name="slide-bounce">
+      <div class="error" v-if="!!error && modelValue.touched">
+        {{ error }}
+      </div>
+    </transition>
   </label>
 </template>
 
@@ -149,5 +151,21 @@ const setValue = (event) => {
   line-height: 1.25em;
   letter-spacing: -0.02em;
   color: $salmon;
+}
+
+.slide-bounce-enter-active {
+  animation: bounce-down 0.5s;
+}
+
+@keyframes bounce-down {
+  0% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 </style>
