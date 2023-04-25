@@ -13,3 +13,34 @@
     transform: translateY(0);
   }
 }
+
+.mode-shake-enter-active, .mode-fade-leave-active {
+  transition: opacity .15s ease-in
+}
+
+.mode-shake-enter-active {
+  animation: bounce-horizontal 0.25s;
+}
+
+.mode-shake-leave-active {
+  animation: bounce-horizontal 0.25s reverse;
+}
+
+.mode-shake-enter-from, .mode-fade-leave-to {
+  opacity: 0.8
+}
+
+@keyframes bounce-horizontal {
+  0% {
+    transform: translateX(-7px);
+  }
+  25% {
+    transform: translateX(6px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
