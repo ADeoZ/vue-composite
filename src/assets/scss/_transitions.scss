@@ -44,3 +44,26 @@
     transform: translateX(0);
   }
 }
+
+.list-item-enter-active {
+  transition: all 1s ease;
+}
+
+.list-item-leave-active {
+  transition: all 0.25s ease;
+}
+
+.list-item-enter-from {
+  opacity: 0;
+  transform: scale(0.9) translateY(-50px);
+}
+
+.list-item-leave-to {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.list-item-move {
+  transition: transform 0.4s ease, opacity 0.4s ease-in;
+  opacity: 0.8;
+}
