@@ -1,0 +1,69 @@
+.slide-bounce-enter-active {
+  animation: bounce-down 0.5s;
+}
+
+@keyframes bounce-down {
+  0% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.mode-shake-enter-active, .mode-fade-leave-active {
+  transition: opacity .15s ease-in
+}
+
+.mode-shake-enter-active {
+  animation: bounce-horizontal 0.25s;
+}
+
+.mode-shake-leave-active {
+  animation: bounce-horizontal 0.25s reverse;
+}
+
+.mode-shake-enter-from, .mode-fade-leave-to {
+  opacity: 0.8
+}
+
+@keyframes bounce-horizontal {
+  0% {
+    transform: translateX(-7px);
+  }
+  25% {
+    transform: translateX(6px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.list-item-enter-active {
+  transition: all 1s ease;
+}
+
+.list-item-leave-active {
+  transition: all 0.25s ease;
+}
+
+.list-item-enter-from {
+  opacity: 0;
+  transform: scale(0.9) translateY(-50px);
+}
+
+.list-item-leave-to {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.list-item-move {
+  transition: transform 0.4s ease, opacity 0.4s ease-in;
+  opacity: 0.8;
+}

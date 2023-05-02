@@ -5,15 +5,17 @@
       :is="fieldType"
       :type="fieldType === 'input' ? 'text' : null"
       :placeholder="placeholder"
-      :class="[fieldType, { invalid: !!error && modelValue.touched }]"
+      :class="[fieldType, { invalid: !!error && modelValue.touched }, { cleared }]"
       :aria-invalid="error || null"
       :value="modelValue.value"
       @input="setValue"
       @blur="$emit('update:modelValue', { ...modelValue, touched: true })"
     />
-    <div class="error" v-if="!!error && modelValue.touched">
-      {{ error }}
-    </div>
+    <transition name="slide-bounce">
+      <div class="error" v-if="!!error && modelValue.touched">
+        {{ error }}
+      </div>
+    </transition>
   </label>
 </template>
 
@@ -65,6 +67,18 @@ const validate = (checkingValue) => {
   emit("update:modelValue", { ...props.modelValue, error: false });
 };
 watch(() => props.modelValue.value, validate, { immediate: true });
+
+// clearing animation
+const cleared = ref(false);
+watch(
+  () => props.modelValue.value,
+  (newOne, oldOne) => {
+    if (oldOne.length > 0 && newOne === "") {
+      cleared.value = true;
+      setTimeout(() => (cleared.value = false));
+    }
+  }
+);
 
 // emit input value
 const setValue = (event) => {
@@ -118,6 +132,13 @@ const setValue = (event) => {
 
   &::placeholder {
     color: $font-disabled;
+    transition: all 0.4s ease-in;
+  }
+
+  &.cleared::placeholder {
+    transition: none;
+    opacity: 0;
+    font-size: 1.2em;
   }
 
   &:focus {

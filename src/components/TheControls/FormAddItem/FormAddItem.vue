@@ -29,8 +29,10 @@
       :format="format.price"
       required
     />
-    <v-button class="form__status" label="&#128077;&#127995;" disabled v-if="showStatus" />
-    <v-button label="Добавить товар" submitButton :disabled="!isFormValid || isLoading" v-else />
+    <transition name="mode-shake" mode="out-in">
+      <v-button class="form__status" label="&#128077;&#127995;" disabled v-if="showStatus" />
+      <v-button label="Добавить товар" submitButton :disabled="!isFormValid || isLoading" v-else />
+    </transition>
   </form>
 </template>
 

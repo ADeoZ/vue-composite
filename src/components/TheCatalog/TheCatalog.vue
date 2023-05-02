@@ -4,9 +4,9 @@
       <catalog-sort v-model="selectedSort" :options="sortOptions" />
     </div>
     <preloader-content v-if="isLoading" />
-    <ul class="catalog__list" v-else>
+    <transition-group name="list-item" tag="ul" class="catalog__list" v-else>
       <catalog-item v-for="item in sortedList" :item="item" :key="item.id" @delete="deleteItem" />
-    </ul>
+    </transition-group>
   </section>
 </template>
 
